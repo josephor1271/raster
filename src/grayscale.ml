@@ -9,7 +9,7 @@ let transform image =
 ;;
 
 let%expect_test "grayscale transform" =
-  let grayscale_image =
+  let expected_image =
     Image.load_ppm
       ~filename:
         "/home/ubuntu/raster/images/reference-beach_portrait_gray.ppm"
@@ -17,27 +17,8 @@ let%expect_test "grayscale transform" =
   let original_image =
     Image.load_ppm ~filename:"/home/ubuntu/raster/images/beach_portrait.ppm"
   in
-  let our_grayscale_image = transform original_image in
-  let x_coords =
-    Image.width our_grayscale_image |> List.init ~f:(fun x -> x)
-  in
-  let y_coords =
-    Image.height our_grayscale_image |> List.init ~f:(fun y -> y)
-  in
-  List.iter x_coords ~f:(fun x_coord ->
-    List.iter y_coords ~f:(fun y_coord ->
-      if
-        Pixel.equal
-          (Image.get grayscale_image ~x:x_coord ~y:y_coord)
-          (Image.get our_grayscale_image ~x:x_coord ~y:y_coord)
-      then ()
-      else
-        print_string
-          ("incorrect at pixel at "
-           ^ string_of_int x_coord
-           ^ ", "
-           ^ string_of_int y_coord
-           ^ "\n")));
+  let our_image = transform original_image in
+  Image.compare_two_images ~expected_image ~our_image;
   [%expect]
 ;;
 

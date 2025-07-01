@@ -545,3 +545,19 @@ let%expect_test "fold and foldi" =
     [%expect {| (2 2) |}];
     return ())
 ;;
+
+let compare_two_images ~expected_image ~our_image =
+  let x_coords = width our_image |> List.init ~f:(fun x -> x) in
+  let y_coords = height our_image |> List.init ~f:(fun y -> y) in
+  List.iter x_coords ~f:(fun x ->
+    List.iter y_coords ~f:(fun y ->
+      if Pixel.equal (get expected_image ~x ~y) (get our_image ~x ~y)
+      then ()
+      else
+        print_string
+          ("incorrect at pixel at "
+           ^ string_of_int x
+           ^ ", "
+           ^ string_of_int y
+           ^ "\n")))
+;;
