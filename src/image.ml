@@ -555,7 +555,7 @@ let compare_two_images ~expected_image ~our_image =
       then ()
       else
         print_string
-          ("incorrect at pixel at "
+          ("incorrect pixel at "
            ^ string_of_int x
            ^ ", "
            ^ string_of_int y
